@@ -19,8 +19,7 @@ Market makers make money by having a a higher ask price(sell price) than its bid
 
 Isn't kalshi the market maker?
 ---
-Are we going to be a better market maker than kalshi or whoever else, by better I mean having a tighter spread than kalshi making our 
-ask price lower and more favorable?
---
+Are we going to be a better market maker than kalshi or whoever else, by better I mean having a tighter spread than kalshi making our ask price lower and more favorable?
+---
 how do you know what ask and bid to pick?
 ---
