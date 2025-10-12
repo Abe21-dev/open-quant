@@ -2,3 +2,5 @@ kalshi-python
 pytest
 cryptography
 python-dotenv
+aiodns
+aiohttp
