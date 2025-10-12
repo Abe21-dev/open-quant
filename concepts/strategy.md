@@ -36,14 +36,6 @@ Initial focus on binary markets with wide spreads that update frequently. Sports
 
 ## Core Market Making Strategy
 
-### Basic Mechanics
-
-**Objective:** Provide liquidity by posting simultaneous buy and sell orders, profiting from the spread.
-
-Got it! Here's the clean approach:
-
-Perfect! Here's the approach:
-
 ## Step 1: Get all binary markets
 
 Just query the API for all active binary markets.
