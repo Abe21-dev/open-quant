@@ -45,14 +45,3 @@ def get(private_key, api_key_id, path, base_url=BASE_URL):
     }
 
     return requests.get(base_url + path, headers=headers)
-
-
-# Load private key
-private_key = load_private_key(PRIVATE_KEY_PATH)
-
-# Get balance
-response = get(private_key, API_KEY_ID, "/trade-api/v2/markets/?limit=1")
-pprint.pprint(response.json())
-
-
-# KXNFLGAME-25OCT12DENNYJ
