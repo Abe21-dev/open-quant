@@ -3,9 +3,9 @@ import aiohttp
 import os
 
 
-from domain.back_tester import BackTester
-from controller.kalshi_client import KalshiClient
-from utils import *
+from core.back_tester import BackTester
+from api.kalshi_client import KalshiClient
+from utils.helpers import *
 from dotenv import load_dotenv
 
 # Load environment variables from the .env file (if present)

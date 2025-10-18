@@ -38,7 +38,7 @@ class MarketsAPI(BaseApiAdapter):
         self,
         limit: int = None,
         cursor: str = None,
-        with_nested_markets: bool = None,
+        include_markets: bool = None,
         status: str = None,
         series_ticker: str = None,
         min_close_ts: int = None,
@@ -46,14 +46,12 @@ class MarketsAPI(BaseApiAdapter):
         params = {
             "limit": limit,
             "cursor": cursor,
-            "with_nested_markets": with_nested_markets,
+            "with_nested_markets": include_markets,
             "series_ticker": series_ticker,
             "status": status,
             "min_close_ts": min_close_ts,
         }
-        print(params["series_ticker"])
         params = dict(filter(lambda x: x[1] != None, params.items()))
-        print(params)
         url = self.base_url + "events"
 
         resp = requests.get(url, params=params, headers=self.header).json()
