@@ -94,8 +94,14 @@ class BackTester:
         for event in self.all_events:
             for m in event["markets"]:
                 m["event_ticker"] = event["event_ticker"]
+                m["series_ticker"] = event["series_ticker"]
+                del m["early_close_condition"]
+                del m["previous_price_dollars"]
+                del m["rules_secondary"]
                 m = {k: v for k, v in m.items() if type(m[k]) is not dict}
                 self.all_markets.append(m)
+
+        pprint(self.all_markets[0])
 
         # create market_data folder
         directory_name = "data"
