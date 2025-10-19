@@ -43,7 +43,7 @@ class LoadOHLC:
         rows = self.__json_to_csv(resp_json, file_name)
 
         with open(os.path.join(dir_name, file_name), "w") as f:
-            writer = csv.DictWriter(f)
+            writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
             writer.writeheader()
             writer.writerows(rows)
 
@@ -82,3 +82,5 @@ class LoadOHLC:
                 "bid_volume": candle["volume"],
             }
             rows.append(row)
+
+        return rows
