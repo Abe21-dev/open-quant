@@ -1,13 +1,14 @@
 import csv
 import os
-import time
 import logging
 
 from datetime import datetime, timedelta
+from core.OHLC_loader import LoadOHLC
+from models.compact_markets import MarketCompat
 from pprint import pprint
 from api.kalshi_client import KalshiClient
 
-# Configure logging
+
 logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
 logger = logging.getLogger(__name__)
 
@@ -33,6 +34,16 @@ class BackTester:
         # load from cached runs if reuse_data true
         self.load_new_market_data()
         self.write_date_to_csv()
+
+        loader = LoadOHLC(self.api_client.marketAPI)
+        random_market = MarketCompat(
+            event_ticker="KXNFLGAME-25OCT16PITCIN",
+            series_ticker="KXNFLGAME",
+            market_ticker="KXNFLGAME-25OCT16PITCIN-PIT",
+            start_ts=int("1759949940"),
+            end_ts=int("1761869700"),
+        )
+        loader.load_OHLC(market=random_market)
 
     def load_new_market_data(self, series_ticker: str = "KXNFLGAME") -> list[dict]:
         # load the first 200 nfl events from the past year
@@ -72,7 +83,7 @@ class BackTester:
                 ).replace(tzinfo=None)
                 if (
                     current_date < market_close_time
-                    and market["market_type"] == "binary"
+                    or market["market_type"] != "binary"
                 ):
                     tb_removed.add(event["event_ticker"])
 
@@ -84,7 +95,6 @@ class BackTester:
             f"Filtered to {len(self.all_events)} closed events ({len(tb_removed)} active events removed)"
         )
 
-        # pprint(self.all_events[0])
         return self.all_events
 
     def write_date_to_csv(self):
@@ -100,8 +110,6 @@ class BackTester:
                 del m["rules_secondary"]
                 m = {k: v for k, v in m.items() if type(m[k]) is not dict}
                 self.all_markets.append(m)
-
-        pprint(self.all_markets[0])
 
         # create market_data folder
         directory_name = "data"

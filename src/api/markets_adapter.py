@@ -56,3 +56,25 @@ class MarketsAPI(BaseApiAdapter):
 
         resp = requests.get(url, params=params, headers=self.header).json()
         return resp["cursor"], resp["events"]
+
+    def get_market_candle_stick(
+        self,
+        series_ticker: str,
+        market_ticker: str,
+        start_ts: int,
+        end_ts: int,
+        period_interval: int = 1,
+    ):
+        params = {
+            "start_ts": start_ts,
+            "end_ts": end_ts,
+            "period_interval": period_interval,
+        }
+        params = dict(filter(lambda x: x[1] != None, params.items()))
+        url = (
+            self.base_url
+            + f"series/{series_ticker}/markets/{market_ticker}/candlesticks"
+        )
+
+        resp = requests.get(url, params=params, headers=self.header)
+        return resp.status_code, resp.json()

@@ -1,6 +1,7 @@
 import asyncio
 import aiohttp
 import os
+import logging
 
 
 from core.back_tester import BackTester
@@ -15,6 +16,10 @@ BASE_URL = os.getenv("BASE_URL")
 PRIVATE_KEY_PATH = os.getenv("PRIVATE_KEY_PATH")
 API_KEY_ID = os.getenv("API_KEY_ID")
 request_header = get_header(api_key_id=API_KEY_ID, key_path=PRIVATE_KEY_PATH)
+
+
+logging.basicConfig(level=logging.INFO, format="[%(levelname)s] %(message)s")
+logger = logging.getLogger(__name__)
 
 
 def main():
