@@ -78,3 +78,11 @@ class MarketsAPI(BaseApiAdapter):
 
         resp = requests.get(url, params=params, headers=self.header)
         return resp.status_code, resp.json()
+
+    def get_event(self, event_ticker: str, with_nested_markets: bool = False):
+        params = {"with_nested_markets": with_nested_markets}
+
+        url = self.base_url + f"events/{event_ticker}"
+        resp = requests.get(url=url, params=params, headers=self.header)
+        print(resp)
+        return resp.status_code, resp.json()

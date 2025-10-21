@@ -3,7 +3,8 @@ import csv
 import sys
 import time
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
+from pprint import pprint
 from models.compact_markets import MarketCompat
 from api.kalshi_client import MarketsAPI
 
@@ -12,6 +13,25 @@ class LoadOHLC:
     def __init__(self, marketAPI: MarketsAPI):
         self.period_interval = 1
         self.marketAPI = marketAPI
+
+    def find_load_OHLC(self, kalshi_url: str):
+        event_id = kalshi_url.split("/")[-1].upper()
+        print(event_id)
+        code, resp = self.marketAPI.get_event(event_id)
+        if code != 200:
+            raise Exception("Invalid event id")
+        pprint(resp)
+        start_ts = datetime.today() - timedelta(days=5)
+        start_ts = int(start_ts.timestamp())
+        end_ts = int(datetime.today().timestamp())
+        market = MarketCompat(
+            resp["event"]["event_ticker"],
+            resp["event"]["series_ticker"],
+            resp["markets"][0]["ticker"],
+            start_ts,
+            end_ts,
+        )
+        self.load_OHLC(market)
 
     def load_OHLC(self, market: MarketCompat):
         time_intervals = self.__get_intervals(market)
@@ -60,7 +80,7 @@ class LoadOHLC:
         print("Converting JSON to CSV...")
         convert_start = time.time()
 
-        file_name = str(date.today()) + "_OHLC.csv"
+        file_name = market.market_ticker + str(date.today()) + "_OHLC.csv"
         dir_name = "data"
         rows = self.__json_to_csv(resp_json, file_name)
 
@@ -119,12 +139,11 @@ class LoadOHLC:
                 "ask_high": float(candle["yes_ask"]["high_dollars"]),
                 "ask_low": float(candle["yes_ask"]["low_dollars"]),
                 "ask_close": float(candle["yes_ask"]["close_dollars"]),
-                "ask_volume": candle["volume"],
                 "bid_open": float(candle["yes_bid"]["open_dollars"]),
                 "bid_high": float(candle["yes_bid"]["high_dollars"]),
                 "bid_low": float(candle["yes_bid"]["low_dollars"]),
                 "bid_close": float(candle["yes_bid"]["close_dollars"]),
-                "bid_volume": candle["volume"],
+                "volume": candle["volume"],
             }
             rows.append(row)
 

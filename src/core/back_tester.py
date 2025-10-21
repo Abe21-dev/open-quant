@@ -10,6 +10,13 @@ from pprint import pprint
 from api.kalshi_client import KalshiClient
 
 
+"""
+for the time being until this comment is removed the back tester will
+stop being written. instead for back testing I am going to use a python note book 
+to back test the performance of the start
+"""
+
+
 class BackTester:
     MAX_EVENTS_PER_REQUEST = 200
 
@@ -27,18 +34,22 @@ class BackTester:
         self,
         reuse_data: bool = True,
     ):
+        if not reuse_data:
+            # load from cached runs if reuse_data true
+            self.load_new_market_data()
+            self.write_date_to_csv()
 
-        # load from cached runs if reuse_data true
-        self.load_new_market_data()
-        self.write_date_to_csv()
-
+        print(
+            int((datetime.today() - timedelta(days=2)).timestamp()),
+            int((datetime.today() + timedelta(days=4)).timestamp()),
+        )
         loader = LoadOHLC(self.api_client.marketAPI)
         random_market = MarketCompat(
             event_ticker="KXNFLGAME-25OCT16PITCIN",
-            series_ticker="KXNFLGAME",
-            market_ticker="KXNFLGAME-25OCT16PITCIN-PIT",
-            start_ts=int("1759949940"),
-            end_ts=int("1761869700"),
+            series_ticker="KXNCAAFGAME",
+            market_ticker="KXNCAAFGAME-25OCT21KENNFIU-FIU",
+            start_ts=int((datetime.today() - timedelta(days=2)).timestamp()),
+            end_ts=int((datetime.today() + timedelta(days=4)).timestamp()),
         )
         loader.load_OHLC(market=random_market)
 

@@ -4,7 +4,7 @@ import os
 import logging
 
 
-from core.back_tester import BackTester
+from core.back_tester import BackTester, LoadOHLC
 from api.kalshi_client import KalshiClient
 from utils.helpers import *
 from dotenv import load_dotenv
@@ -24,8 +24,11 @@ logger = logging.getLogger(__name__)
 
 def main():
     market_client = KalshiClient(base_url=BASE_URL, header=request_header)
-    tester = BackTester(market_client)
-    tester.run_back_test()
+    loader = LoadOHLC(market_client.marketAPI)
+    ## past your kalshi.com link here
+    loader.find_load_OHLC(
+        "https://kalshi.com/markets/kxsongsoncharttswift2/talor-swift-holds-top-2/kxsongsoncharttswift2-25oct25"
+    )
 
 
 if __name__ == "__main__":
