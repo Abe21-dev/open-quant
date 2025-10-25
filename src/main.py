@@ -3,7 +3,7 @@ import aiohttp
 import os
 import logging
 
-
+from pprint import pprint
 from core.back_tester import BackTester, LoadOHLC
 from api.kalshi_client import KalshiClient
 from utils.helpers import *
@@ -23,12 +23,16 @@ logger = logging.getLogger(__name__)
 
 
 def main():
-    market_client = KalshiClient(base_url=BASE_URL, header=request_header)
-    loader = LoadOHLC(market_client.marketAPI)
+    kalshi_client = KalshiClient(base_url=BASE_URL, header=request_header)
+    loader = LoadOHLC(kalshi_client.marketAPI)
     ## past your kalshi.com link here
-    loader.find_load_OHLC(
-        "https://kalshi.com/markets/kxsongsoncharttswift2/talor-swift-holds-top-2/kxsongsoncharttswift2-25oct25"
-    )
+    # loader.find_load_OHLC(
+    #     "https://kalshi.com/markets/kxnflgame/professional-football-game/kxnflgame-25oct26miaatl"
+    # )
+
+    code, resp = kalshi_client.portfolioAPI.create_order()
+    pprint(resp)
+    print(code)
 
 
 if __name__ == "__main__":

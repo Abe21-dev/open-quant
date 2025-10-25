@@ -20,13 +20,17 @@ class LoadOHLC:
         code, resp = self.marketAPI.get_event(event_id)
         if code != 200:
             raise Exception("Invalid event id")
-        pprint(resp)
         start_ts = datetime.today() - timedelta(days=5)
         start_ts = int(start_ts.timestamp())
         end_ts = int(datetime.today().timestamp())
+        resp["markets"] = sorted(
+            resp["markets"], key=lambda x: x["volume"], reverse=True
+        )
+        print(resp["markets"][0]["yes_sub_title"])
         market = MarketCompat(
             resp["event"]["event_ticker"],
             resp["event"]["series_ticker"],
+            # first market availbel on the event
             resp["markets"][0]["ticker"],
             start_ts,
             end_ts,
@@ -108,8 +112,8 @@ class LoadOHLC:
 
     def __get_intervals(self, market: MarketCompat):
         periods = []
-        for i in range(market.start_ts, market.end_ts, 4000):
-            periods.append((i, i + 4000))
+        for i in range(market.start_ts, market.end_ts, 3600):
+            periods.append((i, i + 3600))
 
         return periods
 
