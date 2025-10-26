@@ -18,8 +18,10 @@ import { initialStrategy } from "./marketMaker.js";
 
 dotenv.config();
 
+export const MINUTE = 60;
 export const HOUR = 60 * 60;
 export const DAY = 24 * HOUR;
+export const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 let myApiKey: string | undefined = process.env.API_KEY_ID;
 
@@ -54,14 +56,14 @@ async function mm(eventTicker: string) {
     throw Error("Invalid market or event data");
   }
 
-  await initialStrategy(data.markets!);
+  await initialStrategy(selectedMarket);
 }
 
 async function main(mode: string, link?: string) {
   if (mode == "test") {
-    await marketDataLoader(link ?? "KXNCAAFGAME-25OCT25TXAMLSU");
+    await marketDataLoader(link ?? "KXEARTHQUAKEJAPAN-30");
   } else if (mode == "mm") {
-    await mm("KXNCAAFGAME-25OCT25TXAMLSU");
+    await mm("KXEARTHQUAKEJAPAN-30");
   }
 }
 
@@ -74,3 +76,5 @@ if (argv.length != 0) {
   mode = "test";
 }
 main(mode);
+
+// portfolioInstance.getOrders()
