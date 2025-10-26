@@ -1,0 +1,41 @@
+{
+  "name": "open-quant",
+  "version": "1.0.0",
+  "description": "A project to explore how far small scale quant finance can go",
+  "main": "index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "clean": "rm -rf build",
+    "start": "tsx src/index.ts",
+    "dev": "ts-node-dev --transpile-only --respawn src/index.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Abenezer-Daniel-W/open-quant.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/Abenezer-Daniel-W/open-quant/issues"
+  },
+  "homepage": "https://github.com/Abenezer-Daniel-W/open-quant#readme",
+  "devDependencies": {
+    "@types/minimist": "^1.2.5",
+    "@types/node": "^24.9.1",
+    "eslint": "^9.38.0",
+    "prettier": "^3.6.2",
+    "ts-node": "^10.9.2",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "dotenv": "^17.2.3",
+    "kalshi-typescript": "^2.1.3",
+    "minimist": "^1.2.8"
+  }
+}

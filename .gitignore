@@ -210,3 +210,6 @@ __marimo__/
 
 # save files
 data/*
+
+
+node_modules/
